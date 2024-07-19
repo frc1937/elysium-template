@@ -21,6 +21,7 @@ public class GenericCanCoder extends Encoder {
     private final CANcoder canCoder;
     private final CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
 
+    private final boolean[] signalsToLog = new boolean[5];
     private final Map<String, Queue<Double>> signalQueueList = new HashMap<>();
     private final Queue<Double> timestampQueue = OdometryThread.getInstance().getTimestampQueue();
 
@@ -38,6 +39,8 @@ public class GenericCanCoder extends Encoder {
 
     @Override
     public void setSignalUpdateFrequency(EncoderSignal signal) {
+        signalsToLog[signal.getType().getId()] = true;
+
         switch (signal.getType()) {
             case POSITION -> setupSignal(signal, positionSignal);
             case VELOCITY -> setupSignal(signal, velocitySignal);
@@ -45,29 +48,13 @@ public class GenericCanCoder extends Encoder {
 
         if (!signal.useFasterThread()) return;
 
+        signalsToLog[2] = true;
+        signalsToLog[signal.getType().getId() + 3] = true;
+
         switch (signal.getType()) {
             case POSITION -> signalQueueList.put("position", OdometryThread.getInstance().registerSignal(this::getEncoderPositionPrivate));
             case VELOCITY -> signalQueueList.put("velocity", OdometryThread.getInstance().registerSignal(this::getEncoderVelocityPrivate));
         }
-    }
-
-    @Override
-    public StatusSignal<Double> getRawStatusSignal(EncoderSignal signal) {
-        return switch (signal.getType()) {
-            case POSITION -> positionSignal;
-            case VELOCITY -> velocitySignal;
-        };
-    }
-
-    @Override
-    public void refreshStatusSignals(EncoderSignal... signals) {
-        ArrayList<BaseStatusSignal> baseStatusSignals = new ArrayList<>();
-
-        for (EncoderSignal signal : signals) {
-            baseStatusSignals.add(getRawStatusSignal(signal));
-        }
-
-        BaseStatusSignal.refreshAll(baseStatusSignals.toArray(new BaseStatusSignal[0]));
     }
 
     @Override
@@ -98,8 +85,10 @@ public class GenericCanCoder extends Encoder {
     }
 
     @Override
-    protected void refreshInputs(EncoderInputsAutoLogged inputs) {
+    protected void refreshInputs(EncoderInputs inputs) {
         if (canCoder == null) return;
+
+        inputs.setSignalsToLog(signalsToLog);
 
         BaseStatusSignal.refreshAll(signalsToUpdateList.toArray(new BaseStatusSignal[0]));
 

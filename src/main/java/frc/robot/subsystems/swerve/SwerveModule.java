@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.generic.encoder.Encoder;
-import frc.lib.generic.encoder.EncoderInputsAutoLogged;
+import frc.lib.generic.encoder.EncoderInputs;
 import frc.lib.generic.motor.Motor;
 import frc.lib.generic.motor.MotorInputs;
 import frc.lib.generic.motor.MotorProperties;
@@ -89,7 +89,7 @@ public class SwerveModule {
         return Rotation2d.fromRotations(steerEncoder.getEncoderPosition());
     }
 
-    private EncoderInputsAutoLogged getSteerEncoderInputs() {
+    private EncoderInputs getSteerEncoderInputs() {
         return steerEncoder.getInputs();
     }
 

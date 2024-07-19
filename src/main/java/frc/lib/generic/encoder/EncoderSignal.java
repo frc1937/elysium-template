@@ -2,7 +2,17 @@ package frc.lib.generic.encoder;
 
 public class EncoderSignal {
     public enum SignalType {
-        POSITION, VELOCITY
+        POSITION(0), VELOCITY(1);
+
+        final int id;
+
+        SignalType(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 
     private final SignalType type;
