@@ -14,7 +14,7 @@ public class GlobalConstants {
     public static final Lock FASTER_THREAD_LOCK = new ReentrantLock();
 
     public static final boolean IS_TUNING_MODE = true;
-    public static final Mode CURRENT_MODE = Mode.SIMULATION;
+    public static final Mode CURRENT_MODE = Mode.REPLAY;
 
     public enum Mode {
         REAL, SIMULATION, REPLAY

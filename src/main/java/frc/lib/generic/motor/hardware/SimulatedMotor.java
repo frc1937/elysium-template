@@ -5,14 +5,15 @@ import frc.lib.generic.motor.*;
 import frc.lib.generic.simulation.GenericSimulation;
 import frc.robot.GlobalConstants;
 
-import static frc.lib.generic.motor.MotorInputs.MOTOR_INPUTS_LENGTH;
 import static frc.robot.GlobalConstants.CURRENT_MODE;
 
 public class SimulatedMotor extends Motor {
     private MotorConfiguration currentConfiguration;
     private GenericSimulation simulation;
 
-    private final boolean[] signalsToLog = new boolean[MOTOR_INPUTS_LENGTH];
+    private final boolean[] signalsToLog = new boolean[]{
+            false, false, false, false, false, false, false, false, false, false, false, false, false
+    };
 
     public SimulatedMotor(String name) {
         super(name);
@@ -80,13 +81,13 @@ public class SimulatedMotor extends Motor {
 
     @Override
     protected void refreshInputs(MotorInputs inputs) {
+        inputs.setSignalsToLog(signalsToLog);
+
         if (CURRENT_MODE != GlobalConstants.Mode.SIMULATION) {
             throw new RuntimeException("This motor should NEVER be initialized manually! Use the factory methods instead!");
         }
 
         if (simulation == null) return;
-
-        inputs.setSignalsToLog(signalsToLog);
 
         inputs.voltage = simulation.getVoltage();
         inputs.current = simulation.getCurrent();

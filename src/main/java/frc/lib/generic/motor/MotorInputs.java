@@ -21,7 +21,7 @@ public class MotorInputs implements ChoosableLoggedInputs {
     public double[] threadSystemPosition = new double[0];
     public double[] threadSystemVelocity = new double[0];
 
-    private boolean[] signalsToLog;
+    private boolean[] signalsToLog = new boolean[]{false, false, false, false, false, false, false, false, false, false, false, false, false};
 
     @Override
     public void setSignalsToLog(boolean[] signalsToLog) {
@@ -30,6 +30,8 @@ public class MotorInputs implements ChoosableLoggedInputs {
 
     @Override
     public void toLog(LogTable table) {
+        if (signalsToLog == null) return;
+
         if (signalsToLog[0]) table.put("Voltage", voltage);
         if (signalsToLog[1]) table.put("Current", current);
         if (signalsToLog[2]) table.put("Temperature", temperature);
