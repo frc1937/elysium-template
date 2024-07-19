@@ -2,11 +2,10 @@ package frc.lib.generic.sensors;
 
 import frc.lib.generic.advantagekit.HardwareManager;
 import frc.lib.generic.advantagekit.LoggableHardware;
-import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
 
 public class Sensor implements LoggableHardware {
-    private final SensorInputsAutoLogged inputs = new SensorInputsAutoLogged();
+    private final SensorInputs inputs = new SensorInputs();
     private final String name;
 
     public Sensor(String name) {
@@ -16,6 +15,8 @@ public class Sensor implements LoggableHardware {
         HardwareManager.addHardware(this);
     }
 
+    public void setupSignalsUpdates(SensorSignal... signals) { }
+
     public int get() { return inputs.currentValue; }
 
     @Override
@@ -24,14 +25,7 @@ public class Sensor implements LoggableHardware {
         Logger.processInputs(name, inputs);
     }
 
-    public SensorInputsAutoLogged getInputs() { return inputs; }
-    public void refreshInputs(SensorInputsAutoLogged inputs) { }
+    public void refreshInputs(SensorInputs inputs) { }
 
-    @AutoLog
-    public static class SensorInputs {
-        public int currentValue = 0;
-
-        public int[] threadCurrentValue = new int[0];
-        public double[] timestamp = new double[0];
-    }
+    public SensorInputs getInputs() { return inputs; }
 }

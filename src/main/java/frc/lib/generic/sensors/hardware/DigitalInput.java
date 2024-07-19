@@ -1,7 +1,7 @@
 package frc.lib.generic.sensors.hardware;
 
 import frc.lib.generic.sensors.Sensor;
-import frc.lib.generic.sensors.SensorInputsAutoLogged;
+import frc.lib.generic.sensors.SensorInputs;
 
 public class DigitalInput extends Sensor {
     private final edu.wpi.first.wpilibj.DigitalInput digitalInput;
@@ -12,8 +12,10 @@ public class DigitalInput extends Sensor {
         digitalInput = new edu.wpi.first.wpilibj.DigitalInput(id);
     }
 
+//todo: Implement this fucktarded sensor kus emek
+
     @Override
-    public void refreshInputs(SensorInputsAutoLogged inputs) {
+    public void refreshInputs(SensorInputs inputs) {
         if (digitalInput == null) return;
 
         inputs.currentValue = digitalInput.get() ? 1 : 0;

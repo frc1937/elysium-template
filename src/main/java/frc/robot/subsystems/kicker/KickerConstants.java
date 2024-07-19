@@ -7,6 +7,7 @@ import frc.lib.generic.motor.MotorFactory;
 import frc.lib.generic.motor.MotorProperties;
 import frc.lib.generic.sensors.Sensor;
 import frc.lib.generic.sensors.SensorFactory;
+import frc.lib.generic.sensors.SensorSignal;
 import frc.lib.generic.simulation.SimulationProperties;
 
 public class KickerConstants {
@@ -15,6 +16,8 @@ public class KickerConstants {
 
     static {
         configureMotor();
+
+        BEAM_BREAKER.setupSignalsUpdates(new SensorSignal(SensorSignal.SignalType.BEAM_BREAK));
     }
 
     private static void configureMotor() {

@@ -171,9 +171,6 @@ public class Swerve extends GenericSubsystem {
     private void updatePoseEstimatorStates() {
         final int odometryUpdates = gyroInputs.threadGyroYawDegrees.length;
 
-        System.out.println(odometryUpdates);
-        if (odometryUpdates == 0) return;
-
         final SwerveDriveWheelPositions[] swerveWheelPositions = new SwerveDriveWheelPositions[odometryUpdates];
         final Rotation2d[] gyroRotations = new Rotation2d[odometryUpdates];
 
