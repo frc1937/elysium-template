@@ -33,6 +33,12 @@ import static frc.lib.util.Controller.Axis.LEFT_Y;
 import static frc.robot.GlobalConstants.BLUE_SPEAKER;
 import static frc.robot.poseestimation.poseestimator.PoseEstimatorConstants.FRONT_CAMERA;
 
+//Todo:
+// Remove timestamps from ALL
+// Collision/Skidding detection
+// Latency Compensation
+// Fix LEDs
+
 public class RobotContainer {
     public static final PoseEstimator POSE_ESTIMATOR = new PoseEstimator(
             FRONT_CAMERA
