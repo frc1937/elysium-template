@@ -1,10 +1,11 @@
 package frc.robot.subsystems.flywheels;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import frc.lib.generic.hardware.motor.*;
 import frc.lib.generic.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
 
-import static frc.lib.generic.motor.MotorSignal.SignalType.*;
+import static frc.lib.generic.hardware.motor.MotorSignal.SignalType.*;
 
 public class FlywheelsConstants {
     private static final DCMotor FLYWHEEL_MOTOR_GEARBOX = DCMotor.getNeoVortex(1);

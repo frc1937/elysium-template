@@ -1,10 +1,10 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.math.system.plant.DCMotor;
-import frc.lib.generic.motor.Motor;
-import frc.lib.generic.motor.MotorConfiguration;
-import frc.lib.generic.motor.MotorFactory;
-import frc.lib.generic.motor.MotorProperties;
+import frc.lib.generic.hardware.motor.Motor;
+import frc.lib.generic.hardware.motor.MotorConfiguration;
+import frc.lib.generic.hardware.motor.MotorFactory;
+import frc.lib.generic.hardware.motor.MotorProperties;
 import frc.lib.generic.simulation.SimulationProperties;
 
 public class IntakeConstants {

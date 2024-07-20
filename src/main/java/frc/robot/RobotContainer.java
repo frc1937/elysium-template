@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.lib.generic.GenericSubsystem;
-import frc.lib.generic.motor.MotorProperties;
+import frc.lib.generic.hardware.motor.MotorProperties;
 import frc.lib.util.Controller;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.poseestimation.poseestimator.PoseEstimator;

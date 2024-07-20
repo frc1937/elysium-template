@@ -1,10 +1,10 @@
 package frc.lib.generic.simulation;
 
 import com.ctre.phoenix6.sim.TalonFXSimState;
-import frc.lib.generic.motor.MotorConfiguration;
-import frc.lib.generic.motor.MotorProperties;
-import frc.lib.generic.motor.MotorSignal;
-import frc.lib.generic.motor.hardware.SimulationTalonFX;
+import frc.lib.generic.hardware.motor.MotorConfiguration;
+import frc.lib.generic.hardware.motor.MotorProperties;
+import frc.lib.generic.hardware.motor.MotorSignal;
+import frc.lib.generic.hardware.motor.hardware.SimulationTalonFX;
 
 import java.util.ArrayList;
 import java.util.List;

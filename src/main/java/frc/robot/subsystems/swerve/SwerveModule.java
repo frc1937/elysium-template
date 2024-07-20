@@ -3,11 +3,11 @@ package frc.robot.subsystems.swerve;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.lib.generic.encoder.Encoder;
-import frc.lib.generic.encoder.EncoderInputs;
-import frc.lib.generic.motor.Motor;
-import frc.lib.generic.motor.MotorInputs;
-import frc.lib.generic.motor.MotorProperties;
+import frc.lib.generic.hardware.encoder.Encoder;
+import frc.lib.generic.hardware.encoder.EncoderInputs;
+import frc.lib.generic.hardware.motor.Motor;
+import frc.lib.generic.hardware.motor.MotorInputs;
+import frc.lib.generic.hardware.motor.MotorProperties;
 import frc.lib.math.Conversions;
 import frc.lib.math.Optimizations;
 

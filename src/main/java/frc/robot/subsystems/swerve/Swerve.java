@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import frc.lib.generic.GenericSubsystem;
-import frc.lib.generic.pigeon.PigeonInputs;
+import frc.lib.generic.hardware.pigeon.PigeonInputs;
 import frc.lib.math.Optimizations;
 import frc.lib.util.commands.InitExecuteCommand;
 import frc.lib.util.mirrorable.Mirrorable;

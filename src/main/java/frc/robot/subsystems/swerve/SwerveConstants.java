@@ -8,9 +8,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import frc.lib.generic.pigeon.Pigeon;
-import frc.lib.generic.pigeon.PigeonFactory;
-import frc.lib.generic.pigeon.PigeonSignal;
+import frc.lib.generic.hardware.pigeon.Pigeon;
+import frc.lib.generic.hardware.pigeon.PigeonFactory;
+import frc.lib.generic.hardware.pigeon.PigeonSignal;
 import frc.lib.math.AdvancedSwerveKinematics;
 
 import static edu.wpi.first.units.Units.Inch;
