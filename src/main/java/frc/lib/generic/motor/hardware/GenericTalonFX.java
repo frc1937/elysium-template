@@ -311,27 +311,27 @@ public class GenericTalonFX extends Motor {
     }
 
     private double getSystemPositionPrivate() {
-        return positionSignal.refresh().getValue();
+        return positionSignal.getValue();
     }
 
     private double getSystemVelocityPrivate() {
-        return velocitySignal.refresh().getValue();
+        return velocitySignal.getValue();
     }
 
     private double getVoltagePrivate() {
-        return voltageSignal.refresh().getValue();
+        return voltageSignal.getValue();
     }
 
     private double getClosedLoopTargetPrivate() {
-        return closedLoopTarget.refresh().getValue();
+        return closedLoopTarget.getValue();
     }
 
     private double getTemperaturePrivate() {
-        return temperatureSignal.refresh().getValue();
+        return temperatureSignal.getValue();
     }
 
     private double getCurrentPrivate() {
-        return currentSignal.refresh().getValue();
+        return currentSignal.getValue();
     }
 
     private void setupSignal(final MotorSignal signal, final StatusSignal<Double> correspondingSignal) {

@@ -109,11 +109,11 @@ public class GenericCanCoder extends Encoder {
     }
 
     private double getEncoderPositionPrivate() {
-        return positionSignal.refresh().getValue();
+        return positionSignal.getValue();
     }
 
     private double getEncoderVelocityPrivate() {
-        return velocitySignal.refresh().getValue();
+        return velocitySignal.getValue();
     }
 
     private void setupSignal(final EncoderSignal signal, final StatusSignal<Double> correspondingSignal) {
