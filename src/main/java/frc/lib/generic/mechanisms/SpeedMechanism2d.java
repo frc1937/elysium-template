@@ -1,4 +1,4 @@
-package frc.lib.generic.simulation.mechanisms;
+package frc.lib.generic.mechanisms;
 
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 
 import java.util.List;
 
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.*;
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.generateArrowLigaments;
+import static frc.lib.generic.mechanisms.MechanismConstants.*;
 
 /**
  * A Mechanism2d object to display the current velocity and target velocity of a mechanism.
@@ -124,12 +123,12 @@ public class SpeedMechanism2d {
         this.currentVelocityLigament = root.append(new MechanismLigament2d("CurrentVelocityLigament", 0, 0, MECHANISM_LINE_WIDTH, NO_VELOCITY_COLOUR));
         this.targetVelocityLigament = root.append(new MechanismLigament2d("TargetVelocityLigament", 0, 0, MECHANISM_LINE_WIDTH, TARGET_COLOUR));
 
-        List<MechanismLigament2d> currentLigaments = generateArrowLigaments("CurrentVelocity", NO_VELOCITY_COLOUR, SPEED_ARROW_LENGTH_SCALAR * maximumDisplayableVelocity);
+        List<MechanismLigament2d> currentLigaments = MechanismUtilities.generateArrowLigaments("CurrentVelocity", NO_VELOCITY_COLOUR, SPEED_ARROW_LENGTH_SCALAR * maximumDisplayableVelocity);
 
         this.currentVelocityTopArrowLigament = currentVelocityLigament.append(currentLigaments.get(0));
         this.currentVelocityBottomArrowLigament = currentVelocityLigament.append(currentLigaments.get(1));
 
-        List<MechanismLigament2d> targetLigaments = generateArrowLigaments("TargetVelocity", TARGET_COLOUR, SPEED_ARROW_LENGTH_SCALAR * maximumDisplayableVelocity);
+        List<MechanismLigament2d> targetLigaments = MechanismUtilities.generateArrowLigaments("TargetVelocity", TARGET_COLOUR, SPEED_ARROW_LENGTH_SCALAR * maximumDisplayableVelocity);
 
         this.targetVelocityTopArrowLigament = targetVelocityLigament.append(targetLigaments.get(0));
         this.targetVelocityBottomArrowLigament = targetVelocityLigament.append(targetLigaments.get(1));

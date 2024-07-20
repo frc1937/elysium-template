@@ -1,4 +1,4 @@
-package frc.lib.generic.simulation.mechanisms;
+package frc.lib.generic.mechanisms;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;

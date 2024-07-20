@@ -1,4 +1,4 @@
-package frc.lib.generic.simulation.mechanisms;
+package frc.lib.generic.mechanisms;
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 
 import java.util.List;
 
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.generateLigaments;
+import static frc.lib.generic.mechanisms.MechanismUtilities.generateLigaments;
 
 public class ElevatorMechanism2d {
     private final String key;
@@ -37,7 +37,7 @@ public class ElevatorMechanism2d {
         MechanismRoot2d currentPositionRoot = mechanism.getRoot("ZCurrentPositionRoot", 0.5 * maximumLength, 0);
         MechanismRoot2d targetPositionRoot = mechanism.getRoot("TargetPositionRoot", 0.5 * maximumLength, 0);
 
-        List<MechanismLigament2d> ligaments = generateLigaments(mechanismColor, minimumLength, maximumLength);
+        List<MechanismLigament2d> ligaments = MechanismUtilities.generateLigaments(mechanismColor, minimumLength, maximumLength);
 
         this.currentPositionLigament = currentPositionRoot.append(ligaments.get(0));
         this.targetPositionLigament = targetPositionRoot.append(ligaments.get(1));

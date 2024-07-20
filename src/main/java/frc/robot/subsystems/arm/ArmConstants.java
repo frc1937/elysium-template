@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.lib.generic.encoder.*;
 import frc.lib.generic.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
-import frc.lib.generic.simulation.mechanisms.SingleJointedArmMechanism2d;
+import frc.lib.generic.mechanisms.SingleJointedArmMechanism2d;
 
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;

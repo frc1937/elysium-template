@@ -1,4 +1,4 @@
-package frc.lib.generic.simulation.mechanisms;
+package frc.lib.generic.mechanisms;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 
 import java.util.List;
 
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.MECHANISM_LINE_LENGTH;
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.generateLigaments;
+import static frc.lib.generic.mechanisms.MechanismConstants.MECHANISM_LINE_LENGTH;
+import static frc.lib.generic.mechanisms.MechanismUtilities.generateLigaments;
 
 /**
  * A Mechanism2d object to display the current angle and the target angle of a single jointed arm.
@@ -35,7 +35,7 @@ public class SingleJointedArmMechanism2d {
                 MECHANISM_LINE_LENGTH
         );
 
-        List<MechanismLigament2d> ligaments = generateLigaments(mechanismColor, MECHANISM_LINE_LENGTH);
+        List<MechanismLigament2d> ligaments = MechanismUtilities.generateLigaments(mechanismColor, MECHANISM_LINE_LENGTH);
 
         this.currentPositionLigament = root.append(ligaments.get(0));
         this.targetPositionLigament = root.append(ligaments.get(1));

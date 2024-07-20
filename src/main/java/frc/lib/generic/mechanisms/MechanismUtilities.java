@@ -1,4 +1,4 @@
-package frc.lib.generic.simulation.mechanisms;
+package frc.lib.generic.mechanisms;
 
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.*;
+import static frc.lib.generic.mechanisms.MechanismConstants.*;
 
 public class MechanismUtilities {
 
