@@ -7,7 +7,6 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-import frc.lib.generic.encoder.*;
 import frc.lib.generic.hardware.encoder.*;
 import frc.robot.poseestimation.poseestimator.OdometryThread;
 

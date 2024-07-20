@@ -2,7 +2,6 @@ package frc.robot.subsystems.flywheels;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import frc.lib.generic.hardware.motor.*;
-import frc.lib.generic.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
 
 import static frc.lib.generic.hardware.motor.MotorSignal.SignalType.*;

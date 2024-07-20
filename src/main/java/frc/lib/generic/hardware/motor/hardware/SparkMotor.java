@@ -7,7 +7,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.lib.generic.Feedforward;
 import frc.lib.generic.Properties;
 import frc.lib.generic.hardware.motor.*;
-import frc.lib.generic.motor.*;
 import frc.lib.math.Conversions;
 import frc.robot.poseestimation.poseestimator.OdometryThread;
 

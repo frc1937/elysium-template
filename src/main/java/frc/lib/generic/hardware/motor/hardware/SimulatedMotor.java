@@ -2,7 +2,6 @@ package frc.lib.generic.hardware.motor.hardware;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.lib.generic.hardware.motor.*;
-import frc.lib.generic.motor.*;
 import frc.lib.generic.simulation.GenericSimulation;
 import frc.robot.GlobalConstants;
 

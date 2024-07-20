@@ -2,10 +2,8 @@ package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import frc.lib.generic.encoder.*;
 import frc.lib.generic.hardware.encoder.*;
 import frc.lib.generic.hardware.motor.*;
-import frc.lib.generic.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
 
 import static frc.lib.generic.hardware.motor.MotorSignal.SignalType.*;

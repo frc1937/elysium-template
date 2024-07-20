@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.lib.generic.hardware.motor.*;
-import frc.lib.generic.motor.*;
 
 import java.util.function.DoubleSupplier;
 

@@ -7,19 +7,13 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.lib.generic.encoder.*;
 import frc.lib.generic.hardware.encoder.*;
 import frc.lib.generic.hardware.motor.*;
-import frc.lib.generic.motor.*;
-import frc.lib.generic.simulation.SimulationProperties;
 import frc.lib.generic.mechanisms.SingleJointedArmMechanism2d;
+import frc.lib.generic.simulation.SimulationProperties;
 
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
-import static frc.lib.generic.hardware.motor.MotorSignal.SignalType.POSITION;
-import static frc.lib.generic.hardware.motor.MotorSignal.SignalType.VELOCITY;
-import static frc.lib.generic.hardware.motor.MotorSignal.SignalType.VOLTAGE;
+import static edu.wpi.first.units.Units.*;
+import static frc.lib.generic.hardware.motor.MotorSignal.SignalType.*;
 
 public class ArmConstants {
     static final SysIdRoutine.Config SYSID_CONFIG = new SysIdRoutine.Config(
