@@ -1,6 +1,6 @@
 package frc.lib.generic.motor;
 
-import frc.lib.generic.advantagekit.HardwareManager;
+import frc.lib.HardwareManager;
 import frc.lib.generic.advantagekit.LoggableHardware;
 import org.littletonrobotics.junction.Logger;
 

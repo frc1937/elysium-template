@@ -1,6 +1,7 @@
-package frc.lib.generic.advantagekit;
+package frc.lib;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import frc.lib.generic.advantagekit.LoggableHardware;
 import frc.lib.generic.simulation.GenericSimulation;
 import frc.robot.GlobalConstants;
 import org.littletonrobotics.junction.LogFileUtil;
