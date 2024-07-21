@@ -80,6 +80,8 @@ public class Camera extends PhotonCameraIO {
 
     @Override
     protected void refreshInputs(CameraInputsAutoLogged inputs) {
+        if (photonCamera == null || !photonCamera.isConnected()) return;
+
         final PhotonPipelineResult latestResult = photonCamera.getLatestResult();
         final Optional<EstimatedRobotPose> optionalEstimatedRobotPose = photonPoseEstimator.update(latestResult);
 
