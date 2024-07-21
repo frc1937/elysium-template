@@ -38,7 +38,7 @@ public class Camera extends PhotonCameraIO {
 
     private void logVisibleTags(boolean hasResult, Optional<EstimatedRobotPose> optionalEstimatedRobotPose) {
         if (!hasResult) {
-            Logger.recordOutput("VisibleTags/" + photonCamera.getName(), 0);
+            Logger.recordOutput("VisibleTags/" + photonCamera.getName(), new Pose2d[0]);
             return;
         }
 
