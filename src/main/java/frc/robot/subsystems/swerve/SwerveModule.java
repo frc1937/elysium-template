@@ -78,7 +78,7 @@ public class SwerveModule {
     }
 
     protected SwerveModuleState getCurrentState() {
-        return new SwerveModuleState(getDriveMotorInputs().systemVelocity, getCurrentAngle());
+        return new SwerveModuleState(driveMotor.getSystemVelocity(), getCurrentAngle());
     }
 
     protected SwerveModuleState getTargetState() {
