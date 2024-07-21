@@ -219,7 +219,7 @@ public class Swerve extends GenericSubsystem {
         );
     }
 
-    @AutoLogOutput(key = "Swerve/CurrentStates")
+//    @AutoLogOutput(key = "Swerve/CurrentStates")
     private SwerveModuleState[] getModuleStates() {
         final SwerveModuleState[] states = new SwerveModuleState[MODULES.length];
 
@@ -229,14 +229,14 @@ public class Swerve extends GenericSubsystem {
         return states;
     }
 
-    @AutoLogOutput(key = "Swerve/TargetStates")
-    @SuppressWarnings("unused")
-    private SwerveModuleState[] getTargetStates() {
-        final SwerveModuleState[] states = new SwerveModuleState[MODULES.length];
-
-        for (int i = 0; i < MODULES.length; i++)
-            states[i] = MODULES[i].getTargetState();
-
-        return states;
-    }
+//    @AutoLogOutput(key = "Swerve/TargetStates")
+//    @SuppressWarnings("unused")
+//    private SwerveModuleState[] getTargetStates() {
+//        final SwerveModuleState[] states = new SwerveModuleState[MODULES.length];
+//
+//        for (int i = 0; i < MODULES.length; i++)
+//            states[i] = MODULES[i].getTargetState();
+//
+//        return states;
+//    }
 }

@@ -34,6 +34,7 @@ import static frc.robot.GlobalConstants.BLUE_SPEAKER;
 import static frc.robot.poseestimation.poseestimator.PoseEstimatorConstants.FRONT_CAMERA;
 
 //Todo:
+// Make the code work.
 // Remove timestamps from ALL
 // Collision/Skidding detection
 // Latency Compensation

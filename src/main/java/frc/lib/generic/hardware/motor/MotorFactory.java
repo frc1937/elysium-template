@@ -11,6 +11,7 @@ import static frc.robot.GlobalConstants.CURRENT_MODE;
 public class MotorFactory {
     public static Motor createSpark(String name, int port, MotorProperties.SparkType type) {
         Motor motor = createSimOrReplayMotor(name);
+
         if (motor != null) return motor;
         return new SparkMotor(name, port, type);
     }
