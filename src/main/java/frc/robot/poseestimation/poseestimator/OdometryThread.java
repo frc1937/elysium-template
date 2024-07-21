@@ -47,7 +47,7 @@ public class OdometryThread extends Thread {
 
     private OdometryThread() {
         Notifier notifier = new Notifier(this::periodic);
-        notifier.setName("SparkMaxOdometryThread");
+        notifier.setName("OdometryThread");
         Timer.delay(1);
         notifier.startPeriodic(1.0 / ODOMETRY_FREQUENCY_HERTZ);
     }
@@ -59,18 +59,21 @@ public class OdometryThread extends Thread {
     public Queue<Double> registerSignal(DoubleSupplier signal) {
         Queue<Double> queue = new ArrayBlockingQueue<>(100);
         FASTER_THREAD_LOCK.lock();
+
         try {
             signals.add(signal);
             queues.add(queue);
         } finally {
             FASTER_THREAD_LOCK.unlock();
         }
+
         return queue;
     }
 
     private void periodic() {
         FASTER_THREAD_LOCK.lock();
         timestamps.offer(Logger.getRealTimestamp() / 1.0e6);
+
         try {
             for (int i = 0; i < signals.size(); i++) {
                 queues.get(i).offer(signals.get(i).getAsDouble());

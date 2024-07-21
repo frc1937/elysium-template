@@ -16,7 +16,6 @@ import frc.lib.math.Optimizations;
 import frc.lib.util.commands.InitExecuteCommand;
 import frc.lib.util.mirrorable.Mirrorable;
 import frc.robot.RobotContainer;
-import org.littletonrobotics.junction.AutoLogOutput;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -170,6 +169,8 @@ public class Swerve extends GenericSubsystem {
 
     private void updatePoseEstimatorStates() {
         final int odometryUpdates = gyroInputs.threadGyroYawDegrees.length;
+
+        if (odometryUpdates == 0) return;
 
         final SwerveDriveWheelPositions[] swerveWheelPositions = new SwerveDriveWheelPositions[odometryUpdates];
         final Rotation2d[] gyroRotations = new Rotation2d[odometryUpdates];

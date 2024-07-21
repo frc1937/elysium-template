@@ -14,6 +14,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static frc.robot.GlobalConstants.*;
 
@@ -23,7 +24,7 @@ public enum HardwareManager {
 
     HardwareManager() {}
 
-    private static final List<LoggableHardware> hardware = new ArrayList<>();
+    private static final List<LoggableHardware> hardware = new CopyOnWriteArrayList<>();
     private static final List<Runnable> periodicRunnable = new ArrayList<>();
 
     /**
@@ -85,9 +86,9 @@ public enum HardwareManager {
     public static void update() {
         //TODO: Only if hardware should use lock, USE LOCK
         FASTER_THREAD_LOCK.lock();
-        for (LoggableHardware loggableHardware : hardware) {
-            loggableHardware.periodic();
-        }
+
+        hardware.forEach(LoggableHardware::periodic);
+
         FASTER_THREAD_LOCK.unlock();
 
         periodicRunnable.forEach(Runnable::run);

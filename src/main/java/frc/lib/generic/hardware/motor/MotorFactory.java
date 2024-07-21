@@ -1,9 +1,9 @@
 package frc.lib.generic.hardware.motor;
 
+import frc.lib.generic.hardware.motor.hardware.SimulatedMotor;
 import frc.lib.generic.hardware.motor.hardware.SparkMotor;
 import frc.lib.generic.hardware.motor.hardware.TalonFXMotor;
 import frc.lib.generic.hardware.motor.hardware.TalonSRXMotor;
-import frc.lib.generic.hardware.motor.hardware.SimulatedMotor;
 import frc.robot.GlobalConstants;
 
 import static frc.robot.GlobalConstants.CURRENT_MODE;

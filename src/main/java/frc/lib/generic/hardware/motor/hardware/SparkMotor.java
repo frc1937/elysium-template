@@ -25,7 +25,6 @@ public class SparkMotor extends Motor {
 
     private final boolean[] signalsToLog = new boolean[MOTOR_INPUTS_LENGTH];
     private final Map<String, Queue<Double>> signalQueueList = new HashMap<>();
-    private final Queue<Double> timestampQueue;
 
     private double closedLoopTarget;
 
@@ -52,7 +51,6 @@ public class SparkMotor extends Motor {
         optimizeBusUsage();
 
         encoder = spark.getEncoder();
-        timestampQueue = OdometryThread.getInstance().getTimestampQueue();
     }
 
     @Override
@@ -291,9 +289,8 @@ public class SparkMotor extends Motor {
      */
     private void setupSignalUpdates(MotorSignal signal) {
         final int ms = (int) (1000 / signal.getUpdateRate());
-        final int indexOffset = signal.useFasterThread() ? 7 : 0;
 
-        signalsToLog[signal.getType().getId() + indexOffset] = true;
+        signalsToLog[signal.getType().getId()] = true;
 
         switch (signal.getType()) {
             case VELOCITY, CURRENT, TEMPERATURE -> spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, ms);
@@ -303,7 +300,7 @@ public class SparkMotor extends Motor {
 
         if (!signal.useFasterThread()) return;
 
-        signalsToLog[6] = true;
+        signalsToLog[signal.getType().getId() + 6] = true;
 
         switch (signal.getType()) {
             case POSITION -> signalQueueList.put("position", OdometryThread.getInstance().registerSignal(this::getSystemPositionPrivate));
@@ -328,7 +325,7 @@ public class SparkMotor extends Motor {
         inputs.systemPosition = getEffectivePosition();
         inputs.systemVelocity = getEffectiveVelocity();
 
-        MotorUtilities.handleThreadedInputs(inputs, signalQueueList, timestampQueue);
+        MotorUtilities.handleThreadedInputs(inputs, signalQueueList);
     }
 
     private double getVoltagePrivate() {

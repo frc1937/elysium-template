@@ -19,9 +19,9 @@ public class TalonFXMotor extends Motor {
     private final TalonFX talonFX;
 
     private final Map<String, Queue<Double>> signalQueueList = new HashMap<>();
-    private final Queue<Double> timestampQueue = OdometryThread.getInstance().getTimestampQueue();
 
     private final boolean[] signalsToLog = new boolean[MotorInputs.MOTOR_INPUTS_LENGTH];
+
     private final StatusSignal<Double> positionSignal, velocitySignal, voltageSignal, currentSignal, temperatureSignal, closedLoopTarget;
     private final List<StatusSignal<Double>> signalsToUpdateList = new ArrayList<>();
 
@@ -266,8 +266,7 @@ public class TalonFXMotor extends Motor {
     }
 
     private void setupSignalUpdates(MotorSignal signal) {
-        final int indexOffset = signal.useFasterThread() ? 7 : 0;
-        signalsToLog[signal.getType().getId() + indexOffset] = true;
+        signalsToLog[signal.getType().getId()] = true;
 
         switch (signal.getType()) {
             case VELOCITY -> setupSignal(signal, velocitySignal);
@@ -280,6 +279,8 @@ public class TalonFXMotor extends Motor {
 
         if (!signal.useFasterThread()) return;
 
+        signalsToLog[signal.getType().getId() + 6] = true;
+
         switch (signal.getType()) {
             case VELOCITY -> signalQueueList.put("velocity", OdometryThread.getInstance().registerSignal(this::getSystemVelocityPrivate));
             case POSITION -> signalQueueList.put("position", OdometryThread.getInstance().registerSignal(this::getSystemPositionPrivate));
@@ -289,8 +290,6 @@ public class TalonFXMotor extends Motor {
             case CLOSED_LOOP_TARGET -> signalQueueList.put("target", OdometryThread.getInstance().registerSignal(this::getClosedLoopTargetPrivate));
         }
     }
-
-
 
     @Override
     protected void refreshInputs(MotorInputs inputs) {
@@ -307,7 +306,7 @@ public class TalonFXMotor extends Motor {
         inputs.systemPosition = getSystemPositionPrivate();
         inputs.systemVelocity = getSystemVelocityPrivate();
 
-        MotorUtilities.handleThreadedInputs(inputs, signalQueueList, timestampQueue);
+        MotorUtilities.handleThreadedInputs(inputs, signalQueueList);
     }
 
     private double getSystemPositionPrivate() {

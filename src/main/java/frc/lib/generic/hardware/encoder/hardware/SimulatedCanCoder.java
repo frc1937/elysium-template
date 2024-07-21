@@ -1,6 +1,5 @@
 package frc.lib.generic.hardware.encoder.hardware;
 
-import edu.wpi.first.wpilibj.Timer;
 import frc.lib.generic.hardware.encoder.Encoder;
 import frc.lib.generic.hardware.encoder.EncoderInputs;
 import frc.lib.generic.hardware.encoder.EncoderSignal;
@@ -11,7 +10,7 @@ public class SimulatedCanCoder extends Encoder {
     private DoubleSupplier positionSupplier = () -> 0;
     private DoubleSupplier velocitySupplier = () -> 0;
 
-    private final boolean[] signalsToLog = new boolean[5];
+    private final boolean[] signalsToLog = new boolean[4];
 
     public SimulatedCanCoder(String name) {
         super(name);
@@ -22,8 +21,7 @@ public class SimulatedCanCoder extends Encoder {
         signalsToLog[signal.getType().getId()] = true;
 
         if (signal.useFasterThread()) {
-            signalsToLog[signal.getType().getId() + 3] = true;
-            signalsToLog[2] = true;
+            signalsToLog[signal.getType().getId() + 2] = true;
         }
     }
 
@@ -50,6 +48,5 @@ public class SimulatedCanCoder extends Encoder {
 
         inputs.threadPosition = new double[]{inputs.position};
         inputs.threadVelocity = new double[]{inputs.velocity};
-        inputs.timestamps = new double[]{Timer.getFPGATimestamp()};
     }
 }

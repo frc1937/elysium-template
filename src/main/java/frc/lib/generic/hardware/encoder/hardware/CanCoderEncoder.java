@@ -21,9 +21,8 @@ public class CanCoderEncoder extends Encoder {
     private final CANcoder canCoder;
     private final CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
 
-    private final boolean[] signalsToLog = new boolean[5];
+    private final boolean[] signalsToLog = new boolean[4];
     private final Map<String, Queue<Double>> signalQueueList = new HashMap<>();
-    private final Queue<Double> timestampQueue = OdometryThread.getInstance().getTimestampQueue();
 
     private final List<StatusSignal<Double>> signalsToUpdateList = new ArrayList<>();
     private final StatusSignal<Double> positionSignal, velocitySignal;
@@ -48,8 +47,7 @@ public class CanCoderEncoder extends Encoder {
 
         if (!signal.useFasterThread()) return;
 
-        signalsToLog[2] = true;
-        signalsToLog[signal.getType().getId() + 3] = true;
+        signalsToLog[signal.getType().getId() + 2] = true;
 
         switch (signal.getType()) {
             case POSITION -> signalQueueList.put("position", OdometryThread.getInstance().registerSignal(this::getEncoderPositionPrivate));
@@ -102,10 +100,7 @@ public class CanCoderEncoder extends Encoder {
         if (signalQueueList.get("velocity") != null)
             inputs.threadVelocity = signalQueueList.get("velocity").stream().mapToDouble(Double::doubleValue).toArray();
 
-        inputs.timestamps = timestampQueue.stream().mapToDouble(Double::doubleValue).toArray();
-
         signalQueueList.forEach((k, v) -> v.clear());
-        timestampQueue.clear();
     }
 
     private double getEncoderPositionPrivate() {

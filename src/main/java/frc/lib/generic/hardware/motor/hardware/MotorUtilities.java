@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Queue;
 
 public class MotorUtilities {
-    static void handleThreadedInputs(MotorInputs inputs, Map<String, Queue<Double>> signalQueueList, Queue<Double> timestampQueue) {
+    static void handleThreadedInputs(MotorInputs inputs, Map<String, Queue<Double>> signalQueueList) {
         if (signalQueueList.isEmpty()) return;
 
         if (signalQueueList.get("position") != null)
@@ -22,9 +22,6 @@ public class MotorUtilities {
         if (signalQueueList.get("target") != null)
             inputs.threadTarget = signalQueueList.get("target").stream().mapToDouble(Double::doubleValue).toArray();
 
-        inputs.timestamps = timestampQueue.stream().mapToDouble(Double::doubleValue).toArray();
-
         signalQueueList.forEach((k, v) -> v.clear());
-        timestampQueue.clear();
     }
 }
