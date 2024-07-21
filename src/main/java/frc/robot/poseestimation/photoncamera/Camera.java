@@ -38,7 +38,7 @@ public class Camera extends PhotonCameraIO {
 
     private void logVisibleTags(boolean hasResult, Optional<EstimatedRobotPose> optionalEstimatedRobotPose) {
         if (!hasResult) {
-            Logger.recordOutput("VisibleTags/" + photonCamera.getName());
+            Logger.recordOutput("VisibleTags/" + photonCamera.getName(), 0);
             return;
         }
 
@@ -87,7 +87,7 @@ public class Camera extends PhotonCameraIO {
 
         inputs.hasResult = hasResult(optionalEstimatedRobotPose);
 
-        if (inputs.hasResult) {
+        if (inputs.hasResult && optionalEstimatedRobotPose.isPresent()) {
             final EstimatedRobotPose estimatedRobotPose = optionalEstimatedRobotPose.get();
 
             inputs.cameraPose = estimatedRobotPose.estimatedPose;
