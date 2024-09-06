@@ -63,8 +63,8 @@ public class SpeedMechanism2d {
      * @param velocity the current velocity
      */
     public void updateMechanism(double velocity) {
-//        velocity = inverted ? -velocity : velocity;
-
+        velocity = inverted ? -velocity : velocity;
+//todo: fix class
         buildArrowAtLigament(velocity, currentVelocityTopArrowLigament, currentVelocityBottomArrowLigament);
 
         currentVelocityLigament.setLength(velocity);
@@ -85,7 +85,6 @@ public class SpeedMechanism2d {
         buildArrowAtLigament(targetVelocity, targetVelocityTopArrowLigament, targetVelocityBottomArrowLigament);
         targetVelocityLigament.setLength(targetVelocity);
     }
-    //todo: cleanup this file like what the ehll was he doing lmfao??
 
     private void setCurrentLigamentColor(Color8Bit color) {
         currentVelocityLigament.setColor(color);

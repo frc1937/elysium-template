@@ -22,7 +22,9 @@
       "/SmartDashboard/Mechanisms/FlywheelLeftSim": "Mechanism2d",
       "/SmartDashboard/Mechanisms/FlywheelRight": "Mechanism2d",
       "/SmartDashboard/Mechanisms/FlywheelRightSim": "Mechanism2d",
+      "/SmartDashboard/Mechanisms/LEFT_FLYWHEEL": "Mechanism2d",
       "/SmartDashboard/Mechanisms/Left Flywheel": "Mechanism2d",
+      "/SmartDashboard/Mechanisms/RIGHT_FLYWHEEL": "Mechanism2d",
       "/SmartDashboard/Mechanisms/Right Flywheel": "Mechanism2d",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
     },
@@ -130,10 +132,25 @@
     }
   },
   "NetworkTables Info": {
+    "AdvantageScope@1": {
+      "Subscribers": {
+        "open": true
+      },
+      "open": true
+    },
+    "Clients": {
+      "open": true
+    },
     "Connections": {
       "open": true
     },
+    "Server": {
+      "open": true
+    },
     "visible": true
+  },
+  "NetworkTables View": {
+    "visible": false
   },
   "Plot": {
     "Plot <0>": {

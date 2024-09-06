@@ -16,7 +16,7 @@ public class GlobalConstants {
     public static final boolean IS_TUNING_MODE = true;
 
     public static final boolean SHOULD_WRITE_LOGS = true; //for when the roborio doesn't have enough space...
-    public static final Mode CURRENT_MODE = Mode.REAL;
+    public static final Mode CURRENT_MODE = Mode.SIMULATION;
 
     public enum Mode {
         REAL, SIMULATION, REPLAY

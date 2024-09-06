@@ -29,8 +29,7 @@ public class Flywheels extends GenericSubsystem {
     public Command setTargetTangentialVelocity(double velocityMPS) {
         return new ExecuteEndCommand(
                 () -> setFlywheelsTangentialVelocity(velocityMPS),
-                () -> {
-                },
+                this::stop,
                 this
         );
     }

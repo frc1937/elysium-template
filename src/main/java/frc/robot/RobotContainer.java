@@ -67,8 +67,8 @@ public class RobotContainer {
         LEDS.setDefaultCommand(LEDS.setLEDStatus(Leds.LEDMode.DEFAULT, 0));
         new Trigger(() -> RobotController.getBatteryVoltage() < 11.8).onTrue(LEDS.setLEDStatus(Leds.LEDMode.BATTERY_LOW, 10));
 
-        DoubleSupplier translationSupplier = () -> -driveController.getRawAxis(LEFT_Y);
-        DoubleSupplier strafeSupplier = () -> -driveController.getRawAxis(LEFT_X);
+        final DoubleSupplier translationSupplier = () -> -driveController.getRawAxis(LEFT_Y);
+        final DoubleSupplier strafeSupplier = () -> -driveController.getRawAxis(LEFT_X);
 
         SWERVE.setDefaultCommand(
                 SWERVE.driveOpenLoop(
@@ -91,12 +91,17 @@ public class RobotContainer {
 //        driveController.getButton(Controller.Inputs.A).whileTrue(shooterCommands.shootWithoutPhysics(35,
 //                Rotation2d.fromDegrees(45)));
 
-        driveController.getButton(Controller.Inputs.A).whileTrue(ARM.setTargetPosition(Rotation2d.fromDegrees(30)));
-        driveController.getButton(Controller.Inputs.B).whileTrue(ARM.setTargetPosition(Rotation2d.fromDegrees(60)));
-        driveController.getButton(Controller.Inputs.Y).whileTrue(ARM.setTargetPosition(Rotation2d.fromDegrees(90)));
-        driveController.getButton(Controller.Inputs.X).whileTrue(ARM.setTargetPosition(Rotation2d.fromDegrees(-10)));
+        driveController.getButton(Controller.Inputs.A).whileTrue(shooterCommands.receiveFloorNote());
+
+//        driveController.getButton(Controller.Inputs.A).whileTrue(ARM.setTargetPosition(Rotation2d.fromDegrees(30)));
+//        driveController.getButton(Controller.Inputs.B).whileTrue(ARM.setTargetPosition(Rotation2d.fromDegrees(60)));
+//        driveController.getButton(Controller.Inputs.Y).whileTrue(ARM.setTargetPosition(Rotation2d.fromDegrees(90)));
+//        driveController.getButton(Controller.Inputs.X).whileTrue(ARM.setTargetPosition(Rotation2d.fromDegrees(-10)));
 
         driveController.getStick(Controller.Stick.LEFT_STICK).whileTrue(shooterCommands.receiveFloorNote());
+
+        driveController.getStick(Controller.Stick.RIGHT_STICK)
+                .whileTrue(shooterCommands.shootWithoutPhysics(55, Rotation2d.fromDegrees(45)));
 
 
         userButton.toggleOnTrue(Commands.startEnd(

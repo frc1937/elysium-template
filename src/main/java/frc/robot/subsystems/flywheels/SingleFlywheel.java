@@ -4,6 +4,7 @@ import frc.lib.generic.hardware.motor.Motor;
 import frc.lib.generic.hardware.motor.MotorProperties;
 import frc.lib.generic.simulation.mechanisms.SpeedMechanism2d;
 import frc.lib.math.Conversions;
+import org.littletonrobotics.junction.Logger;
 
 public class SingleFlywheel {
     private final Motor motor;
@@ -15,10 +16,11 @@ public class SingleFlywheel {
         this.flywheelDiameter = flywheelDiameter;
 
         speedMechanism2d =  new SpeedMechanism2d(motor.getName(), flywheelDiameter, 0.001, motor.getCurrentConfiguration().inverted);
+        Logger.recordOutput("LeConsole" + motor.getName(), "SingleFlywheel: " + motor.getName() + " created, inverted: " + motor.getCurrentConfiguration().inverted);
     }
 
     public void periodic() {
-        speedMechanism2d.updateMechanism(motor.getSystemVelocity(), motor.getClosedLoopTarget());
+        speedMechanism2d.updateMechanism(motor.getSystemVelocity());
     }
 
     public boolean hasReachedTarget() {
@@ -27,10 +29,12 @@ public class SingleFlywheel {
 
     public void setTargetVelocity(double velocityRPS) {
         motor.setOutput(MotorProperties.ControlMode.VELOCITY, velocityRPS);
+        speedMechanism2d.setTargetVelocity(velocityRPS);
     }
 
     public void setTargetTangentialVelocity(double velocityMPS) {
         motor.setOutput(MotorProperties.ControlMode.VELOCITY, Conversions.mpsToRps(velocityMPS, flywheelDiameter));
+        speedMechanism2d.setTargetVelocity(Conversions.mpsToRps(velocityMPS, flywheelDiameter));
     }
 
     public double getVoltage() {

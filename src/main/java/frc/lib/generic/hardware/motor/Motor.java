@@ -296,8 +296,7 @@ public class Motor implements LoggableHardware {
 
 
     private void printSignalError(String signalName) {
-        new NoSuchElementException("--------------\n" +
-                "ERROR - TRYING TO RETRIEVE UNINITIALIZED SIGNAL " + signalName + "| AT MOTOR " + name +
-                "\n--------------").printStackTrace();
+        new NoSuchElementException("ERROR -> TRYING TO RETRIEVE UNINITIALIZED SIGNAL " + signalName + "| AT MOTOR " + name)
+                .printStackTrace();
     }
 }
