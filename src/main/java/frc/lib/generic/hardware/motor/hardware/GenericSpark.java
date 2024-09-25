@@ -1,9 +1,14 @@
 package frc.lib.generic.hardware.motor.hardware;
 
 import com.ctre.phoenix6.signals.GravityTypeValue;
-import com.revrobotics.*;
-import edu.wpi.first.math.controller.PIDController;
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Timer;
 import frc.lib.generic.Feedforward;
 import frc.lib.generic.OdometryThread;
 import frc.lib.generic.hardware.motor.Motor;
@@ -22,11 +27,9 @@ import java.util.function.DoubleSupplier;
 import static frc.lib.generic.hardware.motor.MotorInputs.MOTOR_INPUTS_LENGTH;
 
 public class GenericSpark extends Motor {
-    private static final double USE_BUILTIN_FEEDFORWARD_NUMBER = 69420;
-
     private final CANSparkBase spark;
     private final RelativeEncoder encoder;
-    private final SparkPIDController controller;
+    private final SparkPIDController sparkController;
 
     private final boolean[] signalsToLog = new boolean[MOTOR_INPUTS_LENGTH];
     private final Map<String, Queue<Double>> signalQueueList = new HashMap<>();
@@ -35,7 +38,6 @@ public class GenericSpark extends Motor {
 
     private MotorConfiguration currentConfiguration;
     private Feedforward.Type feedforward;
-    private PIDController feedback;
 
     private int slotToUse = 0;
     private double conversionFactor = 1;
@@ -49,20 +51,26 @@ public class GenericSpark extends Motor {
     private boolean hasStoppedOccurred = false;
     private double lastProfileCalculationTimestamp;
 
+    private final Timer timer = new Timer();
+
     public GenericSpark(String name, int deviceId, MotorProperties.SparkType sparkType) {
         super(name);
 
         spark = sparkType.sparkCreator.apply(deviceId);
 
         encoder = spark.getEncoder();
-        controller = spark.getPIDController();
+        sparkController = spark.getPIDController();
 
         optimizeBusUsage();
+
+        timer.start();
+
+        encoder.setPosition(getEffectivePosition());
     }
 
     @Override
     public void setOutput(MotorProperties.ControlMode controlMode, double output) {
-        setOutput(controlMode, output, USE_BUILTIN_FEEDFORWARD_NUMBER);
+        setOutput(controlMode, output, 0);
     }
 
     @Override
@@ -71,12 +79,12 @@ public class GenericSpark extends Motor {
         setGoal(mode, output);
 
         switch (mode) {
-            case PERCENTAGE_OUTPUT -> controller.setReference(output, CANSparkBase.ControlType.kDutyCycle);
+            case PERCENTAGE_OUTPUT -> sparkController.setReference(output, CANSparkBase.ControlType.kDutyCycle);
 
-            case POSITION, VELOCITY -> handleSmoothMotion(mode, feedforward);
+            case POSITION, VELOCITY -> handleSmoothMotion(mode);
 
-            case VOLTAGE -> controller.setReference(output, CANSparkBase.ControlType.kVoltage, slotToUse, 0);
-            case CURRENT -> controller.setReference(output, CANSparkBase.ControlType.kCurrent, slotToUse, 0);
+            case VOLTAGE -> sparkController.setReference(output, CANSparkBase.ControlType.kVoltage, slotToUse, 0);
+            case CURRENT -> sparkController.setReference(output, CANSparkBase.ControlType.kCurrent, slotToUse, 0);
         }
     }
 
@@ -133,6 +141,9 @@ public class GenericSpark extends Motor {
 
         spark.enableVoltageCompensation(12);
 
+        encoder.setPositionConversionFactor(1 / configuration.gearRatio);
+        encoder.setVelocityConversionFactor(1/ (configuration.gearRatio));
+
         conversionFactor = (1.0 / configuration.gearRatio);
 
         if (configuration.statorCurrentLimit != -1) spark.setSmartCurrentLimit((int) configuration.statorCurrentLimit);
@@ -142,6 +153,8 @@ public class GenericSpark extends Motor {
         configurePID(configuration);
 
         configureFeedForward();
+
+        encoder.setPosition(getEffectivePosition());
 
         return spark.burnFlash() == REVLibError.kOk;
     }
@@ -186,15 +199,21 @@ public class GenericSpark extends Motor {
     private void configurePID(MotorConfiguration configuration) {
         slotToUse = configuration.slotToUse;
 
-        feedback = new PIDController(configuration.slot0.kP(), configuration.slot0.kI(), configuration.slot0.kD());
+        sparkController.setP(configuration.slot0.kP(), 0);
+        sparkController.setI(configuration.slot0.kI(), 0);
+        sparkController.setD(configuration.slot0.kD(), 0);
 
-        if (slotToUse == 1)
-            feedback = new PIDController(configuration.slot1.kP(), configuration.slot1.kI(), configuration.slot1.kD());
-        if (slotToUse == 2)
-            feedback = new PIDController(configuration.slot2.kP(), configuration.slot2.kI(), configuration.slot2.kD());
+        sparkController.setP(configuration.slot1.kP(), 1);
+        sparkController.setI(configuration.slot1.kI(), 1);
+        sparkController.setD(configuration.slot1.kD(), 1);
 
-        if (configuration.closedLoopContinuousWrap)
-            feedback.enableContinuousInput(-0.5, 0.5);
+        sparkController.setP(configuration.slot2.kP(), 2);
+        sparkController.setI(configuration.slot2.kI(), 2);
+        sparkController.setD(configuration.slot2.kD(), 2);
+
+        sparkController.setPositionPIDWrappingEnabled(configuration.closedLoopContinuousWrap);
+        sparkController.setSmartMotionAllowedClosedLoopError(configuration.closedLoopTolerance, configuration.slotToUse);
+        //check if works, and if theres a default
     }
 
     /**
@@ -212,8 +231,9 @@ public class GenericSpark extends Motor {
         spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus7, 32767);
     }
 
-    private void handleSmoothMotion(MotorProperties.ControlMode controlMode, double feedforward) {
-        double feedforwardOutput, feedbackOutput, acceleration;
+    private void handleSmoothMotion(MotorProperties.ControlMode controlMode) {
+        double feedforwardOutput, acceleration;
+        final CANSparkBase.ControlType controlType = controlMode == MotorProperties.ControlMode.POSITION ? CANSparkBase.ControlType.kPosition : CANSparkBase.ControlType.kVelocity;
 
         if (positionMotionProfile != null && controlMode == MotorProperties.ControlMode.POSITION) {
             if (goalState == null) return;
@@ -223,50 +243,45 @@ public class GenericSpark extends Motor {
             acceleration = (currentSetpoint.velocity - previousSetpoint.velocity) / 0.02;
 
             feedforwardOutput = this.feedforward.calculate(currentSetpoint.position, currentSetpoint.velocity, acceleration);
-            feedbackOutput = feedback.calculate(getEffectivePosition(), currentSetpoint.position);
+            //set the pos of sparkController getEffectivePosition
 
             previousSetpoint = currentSetpoint;
             lastProfileCalculationTimestamp = Logger.getTimestamp();
+
+            sparkController.setReference(currentSetpoint.position,
+                    controlType, slotToUse, feedforwardOutput,
+                    SparkPIDController.ArbFFUnits.kVoltage);
         } else if (velocityMotionProfile != null && controlMode == MotorProperties.ControlMode.VELOCITY) {
             if (goalState == null) return;
 
             final TrapezoidProfile.State currentSetpoint = velocityMotionProfile.calculate(0.02, previousSetpoint, goalState);
 
             feedforwardOutput = this.feedforward.calculate(currentSetpoint.position, currentSetpoint.velocity);
-            feedbackOutput = this.feedback.calculate(getEffectiveVelocity(), currentSetpoint.position);
+            //set the vel of sparkController getEffectiveVelocity
 
             previousSetpoint = currentSetpoint;
             lastProfileCalculationTimestamp = Logger.getRealTimestamp();
+
+            //this is position because pos is velocity on upgraded
+            sparkController.setReference(currentSetpoint.position * 60, controlType, slotToUse, feedforwardOutput,
+                    SparkPIDController.ArbFFUnits.kVoltage);
         } else {
             if (goalState == null) return;
 
-            feedbackOutput = getModeBasedFeedback(controlMode, goalState);
             feedforwardOutput = this.feedforward.calculate(goalState.position, goalState.velocity, 0);
+
+            final double goal = controlType == CANSparkBase.ControlType.kPosition ? goalState.position : 60 * goalState.position;
+
+            sparkController.setReference(goal,
+                    controlType, slotToUse, feedforwardOutput,
+                    SparkPIDController.ArbFFUnits.kVoltage);
         }
-
-        if (feedforward != USE_BUILTIN_FEEDFORWARD_NUMBER) feedforwardOutput = feedforward;
-
-        controller.setReference(feedforwardOutput + feedbackOutput, CANSparkBase.ControlType.kVoltage);
-    }
-
-    private double getModeBasedFeedback(MotorProperties.ControlMode mode, TrapezoidProfile.State goal) {
-        if (mode != MotorProperties.ControlMode.POSITION && mode != MotorProperties.ControlMode.VELOCITY) return 0;
-
-        if (mode == MotorProperties.ControlMode.POSITION) {
-            return feedback.calculate(getEffectivePosition(), goal.position);
-        }
-
-        return feedback.calculate(getEffectiveVelocity(), goal.velocity);
     }
 
     private void setGoal(MotorProperties.ControlMode controlMode, double goal) {
-        System.out.println("SHOULD RESET PROFILE " + getName() + "I: " + shouldResetProfile(new TrapezoidProfile.State(goal, 0)));
-
         if (!shouldResetProfile(new TrapezoidProfile.State(goal, 0))) return;
 
         hasStoppedOccurred = false;
-
-        feedback.reset();
 
         if (controlMode == MotorProperties.ControlMode.POSITION)
             previousSetpoint = new TrapezoidProfile.State(getEffectivePosition(), getEffectiveVelocity());
@@ -336,6 +351,10 @@ public class GenericSpark extends Motor {
     @Override
     protected void refreshInputs(MotorInputs inputs) {
         if (spark == null) return;
+
+        if (timer.advanceIfElapsed(1)) {
+            encoder.setPosition(getEffectivePosition());
+        }
 
         inputs.setSignalsToLog(signalsToLog);
 

@@ -109,9 +109,11 @@ public class SwerveModuleConstants {
     private static void configureSteerMotor(Motor steerMotor, Encoder encoder) {
         steerMotor.setupSignalUpdates(POSITION);
         steerMotor.setupSignalUpdates(VELOCITY);
-        steerMotor.configure(steerMotorConfiguration);
+        steerMotor.setupSignalUpdates(CLOSED_LOOP_TARGET);
 
         steerMotor.setExternalPositionSupplier(encoder::getEncoderPosition);
+
+        steerMotor.configure(steerMotorConfiguration);
     }
 
     private static void configureDriveConfiguration() {
@@ -133,7 +135,7 @@ public class SwerveModuleConstants {
     }
 
     private static void configureSteerConfiguration() {
-        steerMotorConfiguration.slot0 = new MotorProperties.Slot(30, 0, 0, 0, 0, 0);
+        steerMotorConfiguration.slot0 = new MotorProperties.Slot(5, 0, 0, 0, 0, 0);
 
         steerMotorConfiguration.supplyCurrentLimit = ANGLE_CURRENT_LIMIT;
         steerMotorConfiguration.inverted = ANGLE_MOTOR_INVERT;
